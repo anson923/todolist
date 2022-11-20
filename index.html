@@ -20,9 +20,11 @@
 <script>
 
   const list = document.getElementById('List');
+  const saveKey = "todoListData";
   
   /* Model section - Manage Data and provide functionality */
-  let todoArr = [];
+  let todoArr = retriveTodo();
+  render();
 
   //Create Todo
   function createTodo(title,dueDate)
@@ -31,12 +33,30 @@
       title: title,
       dueDate: dueDate
     });
+
+    saveTodo();
   }
   //Remove Todo
   function removeTodo(title,dueDate,element)
   {
     const index = todoArr.findIndex(x => x.title === title && x.dueDate === dueDate);
     if(index !== -1) todoArr.splice(index , 1);
+
+    saveTodo();
+  }
+
+  //Save Todo
+  function saveTodo()
+  {
+    localStorage.setItem(saveKey,JSON.stringify(todoArr));
+  }
+
+  //Retrive Todo
+  function retriveTodo()
+  {
+    const tempArr = JSON.parse(localStorage.getItem(saveKey));
+
+    return Array.isArray(tempArr) ? tempArr : [] ;
   }
 
   /* View section - controll UI */
