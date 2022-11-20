@@ -1,2 +1,2 @@
-# todolist
- Javascript Todo List
+# simple todolist app
+ simple Javascript Todo List
