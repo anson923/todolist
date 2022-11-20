@@ -2,10 +2,86 @@
 <html>
   <head>
     <title>
-      Javascript ToDo List
+      Javascript ToDo App
     </title>
   </head>
   <body>
-    <p>Hello, World!</p>
+    <input type="text" id="todo-title"/>
+    <input id="date-picker" type="date"/>
+    <button id="todo-button" onclick="addTodo();">Add Todo</button>
+
+    <div id="List">
+
+    </div>
+    
   </body>
 </html>
+
+<script>
+
+  const list = document.getElementById('List');
+  
+  /* Model section - Manage Data and provide functionality */
+  let todoArr = [];
+
+  //Create Todo
+  function createTodo(title,dueDate)
+  {
+    todoArr.push({
+      title: title,
+      dueDate: dueDate
+    });
+  }
+  //Remove Todo
+  function removeTodo(title,dueDate,element)
+  {
+    const index = todoArr.findIndex(x => x.title === title && x.dueDate === dueDate);
+    if(index !== -1) todoArr.splice(index , 1);
+  }
+
+  /* View section - controll UI */
+  function render()
+  {
+    document.getElementById('List').innerHTML = '';
+
+    todoArr.forEach(todoObj => {
+      let element = document.createElement('div');
+
+      element.innerText = todoObj.title + " - Due Date: " + todoObj.dueDate;
+      
+      let deleteBtn = document.createElement('button');
+      deleteBtn.innerText = "Delete";
+      deleteBtn.style='margin-left:12px';
+      
+      deleteBtn.onclick = () => 
+      {
+        deleteTodo(todoObj,element);
+      };
+
+      element.appendChild(deleteBtn);
+
+      list.appendChild(element);
+    });
+  }
+
+  /* Controller section */
+  function addTodo()
+  {
+    const textbox = document.getElementById('todo-title');
+    const datePicker = document.getElementById('date-picker');
+    const title = textbox.value;
+    const dueDate = datePicker.value;
+
+    createTodo(title,dueDate);
+    render();
+  }
+
+  function deleteTodo(todoObj, element)
+  {
+    const title = todoObj.title;
+    const dueDate = todoObj.dueDate;
+
+    removeTodo(title,dueDate,element);
+    render();
+  }
+</script>
